@@ -3,6 +3,8 @@ import {
   Guardian,
   LocalGuardian,
   Student,
+  StudentMethod,
+  StudentTypeModel,
   UserName,
 } from './student.interface';
 
@@ -52,8 +54,14 @@ const guardianSchema = new Schema<Guardian>({
   },
 });
 
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<Student, StudentTypeModel, StudentMethod>({
   id: { type: String, required: [true, 'id is Required'], unique: true },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'ID is Required'],
+    unique: true,
+    ref: 'User',
+  },
   name: {
     type: userNameSchema,
     required: [true, 'Student name is Required'],
@@ -97,11 +105,12 @@ const studentSchema = new Schema<Student>({
     required: [true, 'Local Guardina information is Required'],
   },
   profileImg: { type: String },
-  isActive: {
-    type: String,
-    enum: ['active', 'inactive'],
-    default: 'active',
-  },
 });
 
-export const StudentModel = model<Student>('Student', studentSchema);
+
+studentSchema.methods.isUserExists = async function( id: string){
+  const existingUser = await StudentModel.findOne({id});
+  return existingUser
+}
+
+export const StudentModel = model<Student, StudentTypeModel>('Student', studentSchema);

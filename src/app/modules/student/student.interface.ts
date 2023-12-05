@@ -1,5 +1,7 @@
 // import { Schema, model, connect } from 'mongoose';
 
+import { Model, Types } from 'mongoose';
+
 export type Guardian = {
   fatherName: string;
   fatherOccupation: string;
@@ -24,6 +26,7 @@ export type LocalGuardian = {
 
 export type Student = {
   id: string;
+  user: Types.ObjectId;
   name: UserName;
   gender: 'male' | 'female';
   dateOfBirth?: string;
@@ -36,5 +39,21 @@ export type Student = {
   guardian: Guardian;
   localGuardian: LocalGuardian;
   profileImg?: string;
-  isActive: 'active' | 'inactive';
 };
+
+
+//for creating static
+
+
+
+//for creating instance
+
+// export type StudentMethod = {
+//   isUserExists(id: string): Promise<Student | null>;
+// };
+
+// export type StudentTypeModel = Model<
+//   Student,
+//   Record<string, never>,
+//   StudentMethod
+// >;

@@ -8,7 +8,7 @@ const userSchema = new Schema<User>(
       required: true,
     },
     password: { type: 'String', required: true },
-    needsPasswordChange: { type: 'boolean', required: true },
+    needsPasswordChange: { type: 'boolean', default: true },
     role: {
       type: 'String',
       enum: ['student', 'admin', 'faculty'],
@@ -16,6 +16,7 @@ const userSchema = new Schema<User>(
     status: {
       type: 'String',
       enum: ['in-progress', 'blocked'],
+      default: 'in-progress'
     },
     isDeleted: {
       type: 'Boolean',
