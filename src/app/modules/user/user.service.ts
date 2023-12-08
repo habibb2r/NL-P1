@@ -6,13 +6,18 @@ import { UserModel } from "./user.model";
 
 const createStudentIntoDB = async (password : string, studentData: Student) => {
     
-    // const student = new StudentModel(studentData)
+    // const student = new StudentModel(studentData) //create an instance
 
     // if(await student.isUserExists(student.id)){
     //     throw new Error('User already exists')
     // }
 
     // const result = await student.save()
+
+  const result = await StudentModel.create(studentData);
+  if(await StudentModel.isUserExists(studentData.id)){
+    throw new Error('User already exists');
+  }
 
     //create a user object
     const userData : Partial<User> = {};

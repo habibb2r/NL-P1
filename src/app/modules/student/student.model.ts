@@ -7,6 +7,8 @@ import {
   StudentTypeModel,
   UserName,
 } from './student.interface';
+import bycrypt from 'bcrypt'
+import config from '../../config';
 
 const userNameSchema = new Schema<UserName>({
   firstName: {
@@ -54,7 +56,7 @@ const guardianSchema = new Schema<Guardian>({
   },
 });
 
-const studentSchema = new Schema<Student, StudentTypeModel, StudentMethod>({
+const studentSchema = new Schema<Student, StudentTypeModel>({
   id: { type: String, required: [true, 'id is Required'], unique: true },
   user: {
     type: Schema.Types.ObjectId,
@@ -108,9 +110,42 @@ const studentSchema = new Schema<Student, StudentTypeModel, StudentMethod>({
 });
 
 
-studentSchema.methods.isUserExists = async function( id: string){
-  const existingUser = await StudentModel.findOne({id});
+
+//virtual
+
+studentSchema.virtual('fullName').get(function(){
+  return this.name.firstName + this.name.middleName + this.name.lastName
+})
+
+//pre save middleware /hook
+
+studentSchema.pre('save', async function(next){
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  // const user = this
+  // //hashing password and save into db
+  // user.password = await bycrypt.hash(user.password, Number(config.bycript_salt))
+  // next()
+
+})
+
+
+//post save middleware / hook
+studentSchema.post('save', function(){
+
+})
+
+
+
+//creating    custom statics method
+studentSchema.statics.isUserExists = async function(id : string){
+  const existingUser = await StudentModel.findOne({id})
   return existingUser
 }
+
+
+// studentSchema.methods.isUserExists = async function( id: string){
+//   const existingUser = await StudentModel.findOne({id});
+//   return existingUser
+// }
 
 export const StudentModel = model<Student, StudentTypeModel>('Student', studentSchema);
