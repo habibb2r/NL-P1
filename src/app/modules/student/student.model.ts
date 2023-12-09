@@ -3,12 +3,10 @@ import {
   Guardian,
   LocalGuardian,
   Student,
-  StudentMethod,
   StudentTypeModel,
   UserName,
 } from './student.interface';
-import bycrypt from 'bcrypt'
-import config from '../../config';
+
 
 const userNameSchema = new Schema<UserName>({
   firstName: {
@@ -57,10 +55,10 @@ const guardianSchema = new Schema<Guardian>({
 });
 
 const studentSchema = new Schema<Student, StudentTypeModel>({
-  id: { type: String, required: [true, 'id is Required'], unique: true },
+  id: { type: String, required: [true, 'Id is Required'], unique: true },
   user: {
     type: Schema.Types.ObjectId,
-    required: [true, 'ID is Required'],
+    required: [true, 'User ID is Required'],
     unique: true,
     ref: 'User',
   },
@@ -117,23 +115,21 @@ studentSchema.virtual('fullName').get(function(){
   return this.name.firstName + this.name.middleName + this.name.lastName
 })
 
-//pre save middleware /hook
+// Query Middleware
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
-studentSchema.pre('save', async function(next){
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  // const user = this
-  // //hashing password and save into db
-  // user.password = await bycrypt.hash(user.password, Number(config.bycript_salt))
-  // next()
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
-})
-
-
-//post save middleware / hook
-studentSchema.post('save', function(){
-
-})
-
+studentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
 
 
 //creating    custom statics method

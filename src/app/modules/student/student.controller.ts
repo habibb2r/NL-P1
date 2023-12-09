@@ -1,9 +1,9 @@
 import { StudentServices } from './student.service';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 
 
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await StudentServices.getAllStudentsFormDB();
     res.status(200).json({
@@ -12,11 +12,11 @@ const getAllStudents = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
-const getSingleStudents = async (req: Request, res: Response) => {
+const getSingleStudents = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { studentId } = req.params;
     const result = await StudentServices.getSingleStudentFormDB(studentId);
@@ -26,7 +26,7 @@ const getSingleStudents = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
