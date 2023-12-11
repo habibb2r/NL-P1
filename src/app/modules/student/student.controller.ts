@@ -1,22 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { StudentServices } from './student.service';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 
 
-
-const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const result = await StudentServices.getAllStudentsFormDB();
-    res.status(200).json({
-      success: true,
-      message: 'Students are retrived successfully',
-      data: result,
-    });
-  } catch (err) {
-    next(err);
+const catchAsync = (fn: RequestHandler) =>{
+  return (req: Request, res: Response, next: NextFunction) =>{
+    Promise.resolve(fn(req, res, next)).catch((err)=> next(err));
   }
-};
+}
 
-const getSingleStudents = async (req: Request, res: Response, next: NextFunction) => {
+// eslint-disable-next-line no-unused-vars
+const getAllStudents = catchAsync(async (req, res, next) => {
+      const result = await StudentServices.getAllStudentsFormDB();
+      res.status(200).json({
+        success: true,
+        message: 'Students are retrived successfully',
+        data: result,
+      });
+  }
+)
+
+const getSingleStudents : RequestHandler = async (req, res, next) => {
   try {
     const { studentId } = req.params;
     const result = await StudentServices.getSingleStudentFormDB(studentId);
