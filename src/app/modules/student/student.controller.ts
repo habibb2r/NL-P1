@@ -1,16 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import catchAsync from '../../utils/catchAsync';
 import { StudentServices } from './student.service';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 
 
-const catchAsync = (fn: RequestHandler) =>{
-  return (req: Request, res: Response, next: NextFunction) =>{
-    Promise.resolve(fn(req, res, next)).catch((err)=> next(err));
-  }
-}
 
-const getAllStudents = catchAsync(async (req, res, next) => {
+
+const getAllStudents = catchAsync(async (req, res) => {
       const result = await StudentServices.getAllStudentsFormDB();
       res.status(200).json({
         success: true,
@@ -20,7 +17,7 @@ const getAllStudents = catchAsync(async (req, res, next) => {
   }
 )
 
-const getSingleStudents = catchAsync(async (req, res, next) => {
+const getSingleStudents = catchAsync(async (req, res) => {
     const { studentId } = req.params;
     const result = await StudentServices.getSingleStudentFormDB(studentId);
     res.status(200).json({
