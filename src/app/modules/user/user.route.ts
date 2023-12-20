@@ -1,13 +1,12 @@
-import express, { RequestHandler } from 'express';
+import express, {  } from 'express';
 import { UserController } from './user.controller';
+import validationRequest from '../../utils/validationRequest';
+import { createStudentValidationSchema } from '../student/student.validation';
 
 const router = express.Router();
 
-const senabahini: RequestHandler = (req, res,  next)=>{
-    console.log('got data sent to senabahini');
-    next()
-}
 
-router.post('/create-student', senabahini, UserController.createStudent)
+
+router.post('/create-student', validationRequest(createStudentValidationSchema), UserController.createStudent)
 
 export const UserRoutes = router;
