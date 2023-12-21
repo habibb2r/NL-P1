@@ -1,9 +1,18 @@
 import express from 'express';
+import { AcademicSemesterController } from './academicSemester.controller';
+import validationRequest from '../../utils/validationRequest';
 
+import { AcademicSemesterValidations } from './academicSemester.validation';
 
 const router = express.Router();
 
-router.post('/create-academic-semester');
+router.post(
+  '/create-academic-semester',
+  validationRequest(
+    AcademicSemesterValidations.createAcademicSemesterValidaionSchema,
+  ),
+  AcademicSemesterController.createAcademicSemester,
+);
 // router.get('/', StudentControllers.getAllStudents);
 // router.get('/:studentId', StudentControllers.getSingleStudents);
 
