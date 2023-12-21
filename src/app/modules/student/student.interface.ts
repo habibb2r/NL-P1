@@ -1,6 +1,3 @@
-import { StudentTypeModel } from './student.interface';
-// import { Schema, model, connect } from 'mongoose';
-
 import { Model, Types } from 'mongoose';
 
 export type Guardian = {
@@ -42,11 +39,10 @@ export type Student = {
   profileImg?: string;
 };
 
-
 //for creating static
 
-export interface StudentTypeModel extends Model<Student>{
-  isUserExists(id : string): Promise<Student | null>
+export interface StudentTypeModel extends Model<Student> {
+  isUserExists(id: string): Promise<Student | null>;
 }
 
 //for creating instance
