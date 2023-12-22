@@ -15,6 +15,17 @@ const createAcademicSemester = catchAsync(async (req, res) => {
   });
 });
 
+const getAcademicSemesters = catchAsync(async(req, res)=>{
+  const result = await AcademicSemesterServices.getAcademicSemestersFromDB();
+  sendResoponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic Semesters retrived successfully',
+    data: result,
+  });
+})
+
 export const AcademicSemesterController = {
   createAcademicSemester,
+  getAcademicSemesters
 };
