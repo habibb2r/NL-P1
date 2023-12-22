@@ -1,3 +1,4 @@
+
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
 import { TAcademicSemester } from './academinSemester.interface';
 import { AcademicSemesterModel } from './academinSemester.model';
@@ -10,12 +11,18 @@ const createAcademicSemseterIntoDB = async (payload: TAcademicSemester) => {
   return result;
 };
 
-const getAcademicSemestersFromDB = async() =>{
-  const result = await AcademicSemesterModel.find()
+const getAcademicSemestersFromDB = async () => {
+  const result = await AcademicSemesterModel.find();
   return result;
-}
+};
+
+const getSingleAcademicSemesterFromDB = async (id: string) => {
+  const result = await AcademicSemesterModel.findById(id);
+  return result;
+};
 
 export const AcademicSemesterServices = {
   createAcademicSemseterIntoDB,
-   getAcademicSemestersFromDB
+  getAcademicSemestersFromDB,
+  getSingleAcademicSemesterFromDB,
 };

@@ -14,6 +14,7 @@ router.post(
   AcademicSemesterController.createAcademicSemester,
 );
 router.get('/get-academic-semesters', AcademicSemesterController.getAcademicSemesters);
+router.get('/get-single-semester/:semesterId', AcademicSemesterController.getSingleAcademicSemester);
 // router.get('/', StudentControllers.getAllStudents);
 // router.get('/:studentId', StudentControllers.getSingleStudents);
 
