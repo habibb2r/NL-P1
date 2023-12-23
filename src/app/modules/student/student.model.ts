@@ -105,6 +105,11 @@ const studentSchema = new Schema<Student, StudentTypeModel>({
     required: [true, 'Local Guardina information is Required'],
   },
   profileImg: { type: String },
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicSemester'
+
+  }
 });
 
 
