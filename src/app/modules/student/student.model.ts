@@ -7,7 +7,6 @@ import {
   UserName,
 } from './student.interface';
 
-
 const userNameSchema = new Schema<UserName>({
   firstName: {
     type: String,
@@ -107,18 +106,15 @@ const studentSchema = new Schema<Student, StudentTypeModel>({
   profileImg: { type: String },
   admissionSemester: {
     type: Schema.Types.ObjectId,
-    ref: 'AcademicSemester'
-
-  }
+    ref: 'AcademicSemester',
+  },
 });
-
-
 
 //virtual
 
-studentSchema.virtual('fullName').get(function(){
-  return this.name.firstName + this.name.middleName + this.name.lastName
-})
+studentSchema.virtual('fullName').get(function () {
+  return this.name.firstName + this.name.middleName + this.name.lastName;
+});
 
 // Query Middleware
 studentSchema.pre('find', function (next) {
@@ -136,17 +132,18 @@ studentSchema.pre('aggregate', function (next) {
   next();
 });
 
-
 //creating    custom statics method
-studentSchema.statics.isUserExists = async function(id : string){
-  const existingUser = await StudentModel.findOne({id})
-  return existingUser
-}
-
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await StudentModel.findOne({ id });
+  return existingUser;
+};
 
 // studentSchema.methods.isUserExists = async function( id: string){
 //   const existingUser = await StudentModel.findOne({id});
 //   return existingUser
 // }
 
-export const StudentModel = model<Student, StudentTypeModel>('Student', studentSchema);
+export const StudentModel = model<Student, StudentTypeModel>(
+  'Student',
+  studentSchema,
+);
