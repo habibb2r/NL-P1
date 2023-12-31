@@ -9,6 +9,7 @@ const userSchema = new Schema<User>(
     id: {
       type: 'String',
       required: true,
+      unique: true
     },
     password: { type: 'String', required: true },
     needsPasswordChange: { type: 'boolean', default: true },

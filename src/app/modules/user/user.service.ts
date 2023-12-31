@@ -17,11 +17,11 @@ const createStudentIntoDB = async (password: string, payload: Student) => {
 
   userData.role = 'student';
 
-  const academicSemester : any = await AcademicSemesterModel.findById(
+  const academicSemester: any = await AcademicSemesterModel.findById(
     payload.admissionSemester,
   );
   //set manually generated id
-  userData.id = generateStudentId(academicSemester);
+  userData.id = await generateStudentId(academicSemester);
 
   //create user
   const newUser = await UserModel.create(userData);
